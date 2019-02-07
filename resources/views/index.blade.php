@@ -1,0 +1,1 @@
+<p>well, hello <strong>there</strong> {{ auth()->user()->name }}</p>

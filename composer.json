@@ -1,0 +1,54 @@
+{
+    "name": "graphicms/cms",
+    "description": "GraphiCms",
+    "keywords": [
+        "graphicms",
+        "cms"
+    ],
+    "homepage": "https://github.com/graphicms/cms",
+    "license": "MIT License (MIT)",
+    "type": "library",
+    "authors": [
+        {
+            "name": "GraphiCms",
+            "email": "filip@pacurar.co",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "5.7.*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "3.7.*",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Graphicms\\Cms\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Graphicms\\Cms\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Graphicms\\Cms\\CmsServiceProvider"
+            ],
+            "aliases": {
+                "Cms": "Graphicms\\Cms\\CmsFacade"
+            }
+        }
+    }
+}
