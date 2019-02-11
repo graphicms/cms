@@ -1,21 +1,25 @@
 <?php
 
-namespace Graphicms\Cms;
+namespace App\Providers;
 
 use Graphicms\Cms\Events\ServingGraphi;
-use Illuminate\Support\ServiceProvider;
+use Graphicms\Cms\CmsApplicationServiceProvider;
 
-class CmsApplicationServiceProvider extends ServiceProvider
+class GraphiServiceProvider extends CmsApplicationServiceProvider
 {
     public function boot()
     {
-        $this->routes();
-        $this->authorize();
+        parent::boot();
     }
 
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
     public function register()
     {
-        //
+        parent::register();
     }
 
     public function routes()
@@ -42,7 +46,7 @@ class CmsApplicationServiceProvider extends ServiceProvider
 
     protected function authorize()
     {
-        Cms::serving(function (ServingGraphi $request) {
+        \Cms::serving(function (ServingGraphi $request) {
             $this->authorization();
         });
     }
