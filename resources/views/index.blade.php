@@ -1,1 +1,5 @@
-<p>well, hello <strong>there</strong> {{ auth()->user()->name }}</p>
+@extends('cms::layouts.main')
+
+@section('content')
+
+@endsection
