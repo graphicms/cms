@@ -52,6 +52,15 @@ class DynamicMutation extends Mutation implements DynamicInterface
         return $this['resolver'](...$args);
     }
 
+    public function rules(array $args = [])
+    {
+        $rules = $this->get('rules', []);
+        if(is_callable($rules)) {
+            $rules = $rules($args);
+        }
+        return $rules;
+    }
+
     public static function make($att = [])
     {
         return new static($att);

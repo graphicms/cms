@@ -1,0 +1,89 @@
+@import "bootstrap";
+@import '../../node_modules/bootstrap-vue/src/variables';
+
+@tailwind preflight;
+@tailwind components;
+
+@tailwind utilities;
+
+@import "styles.css";
+@import "table";
+
+html,
+body {
+    height: 100%;
+}
+
+.form-input {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight;
+  &[readonly] {
+    @apply cursor-not-allowed bg-grey-light;
+  }
+  &:focus {
+    @apply outline-none shadow-outline;
+    box-shadow: initial;
+  }
+}
+
+.form-label {
+  @apply block text-grey-darker text-sm font-bold mb-2;
+}
+
+.is-invalid {
+  .form-label {
+    @apply text-red font-bold;
+  }
+  small {
+    @apply text-red;
+  }
+  .form-input {
+    @apply border-red;
+    &::placeholder {
+      @apply text-red font-bold;
+    }
+  }
+}
+
+input[type="submit"][disabled] {
+  @apply bg-grey border-grey-dark;
+}
+
+a:not([href]):not([tabindex]) {
+  color: initial;
+}
+
+a:not([href]):not([tabindex]):hover,
+a:not([href]):not([tabindex]):focus {
+  color: initial;
+}
+
+.side-menu {
+  a {
+    @apply text-grey-darker no-underline;
+
+    &.router-link-exact-active {
+      @apply font-bold text-arsenic;
+    }
+  }
+  div.break{
+    flex-basis: 100%;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+  }
+  @apply flex flex-col;
+  .icon-col {
+    width: 30px;
+  }
+  .root-side-menu {
+    .submenu {
+      flex: 1;
+    }
+  }
+  .nested-1 {
+    //padding-left: 5px;
+  }
+  .nested-2 {
+    //padding-left: 5px;
+  }
+}

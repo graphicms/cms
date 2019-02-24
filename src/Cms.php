@@ -2,17 +2,20 @@
 
 namespace Graphicms\Cms;
 
+use Graphicms\Cms\Core\Concerns\HasMeta;
+use Graphicms\Cms\Core\Concerns\RegistersColumns;
+use Graphicms\Cms\Core\Concerns\RegistersFields;
+use Graphicms\Cms\Core\Concerns\RegistersMenuItems;
+use Graphicms\Cms\Core\Concerns\RegistersTypes;
 use Graphicms\Cms\Events\ServingGraphi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Fluent;
 
 class Cms
 {
     use AuthorizesRequests;
-
+    use RegistersTypes, RegistersFields, RegistersColumns, RegistersMenuItems, HasMeta;
     /**
      * The variables that should be made available on the GraphiCms JavaScript object.
      *
@@ -20,56 +23,24 @@ class Cms
      */
     public static $jsonVariables = [];
 
+    public static $isServing = false;
+
     public static function version()
     {
         return '0.1.0';
     }
 
-    public static function meta($meta = null)
+    public function authorizeSchema()
     {
-        if($meta !== null) {
-            static::setMeta(is_object($meta) && $meta instanceof Fluent ? $meta->toArray() : $meta);
-            return true;
-        }
-        try {
-            if (file_exists(storage_path('framework/graphicms.json'))) {
-                $data = \json_decode(file_get_contents(storage_path('framework/graphicms.json')), true);
-                if (JSON_ERROR_NONE !== json_last_error()) {
-                    throw new \InvalidArgumentException(
-                        'json_decode error: ' . json_last_error_msg()
-                    );
-                }
-                foreach($data as $key => &$d) {
-                    if($key == 'upgrades') {
-                        foreach($d as &$upgrade) {
-                            if(!$upgrade instanceof Carbon && array_key_exists('date', $upgrade)) {
-                            $upgrade = Carbon::parse($upgrade['date']);
-                            }
-                        }
-//                    $d['upgrades'] = $upgrades;
-                    }
-                }
-                return new Fluent($data);
-            } else {
-                throw new \Exception('file does not exist');
-            }
-        } catch (\Exception $e) {
-            logger()->critical('graphicms.json is missing');
-            return new Fluent([
-                'version' => static::version(),
-                'installed_at' => now(),
-                'upgrades' => [],
-            ]);
-        }
+
     }
 
-    public static function setMeta($meta)
+    public static function isServing($is = null)
     {
-        try {
-            file_put_contents(storage_path('framework/graphicms.json'), json_encode($meta, JSON_PRETTY_PRINT));
-        } catch (\Exception $e) {
-
+        if ($is !== null) {
+            static::$isServing = $is;
         }
+        return static::$isServing;
     }
 
     public static function jsonVariables(Request $request)

@@ -2,24 +2,53 @@
 
 namespace Graphicms\Cms;
 
+use Graphicms\Cms\Core\Bootstrappers\Demo;
+use Graphicms\Cms\Core\Bootstrappers\RegisterIntrospection;
+use Graphicms\Cms\Core\Bootstrappers\RegisterMenu;
+use Graphicms\Cms\Core\Bootstrappers\SwapExceptionHandler;
+use Graphicms\Cms\Core\Bootstrappers\RegisterBackendScheme;
+use Graphicms\Cms\Core\Bootstrappers\RegisterCoreInterfaces;
+use Graphicms\Cms\Core\Bootstrappers\RegisterWarehouse;
+use Graphicms\Cms\Core\Bootstrappers\RegisterAuth;
+use Graphicms\Cms\Core\Bootstrappers\RegisterDynamicTypes;
+use Graphicms\Cms\Core\Bootstrappers\RegisterDataTools;
+use Graphicms\Cms\GraphQL\Controller;
+
 use Graphicms\Cms\Console\Commands\InstallCommand;
 use Graphicms\Cms\Console\Commands\UpgradeCommand;
-use Graphicms\Cms\Core\RegisterBackendScheme;
-use Graphicms\Cms\Core\RegisterWarehouse;
+use Graphicms\Cms\Core\Fields\Size;
 use Graphicms\GraphQL\GraphQLServiceProvider;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class CmsServiceProvider extends ServiceProvider
 {
     protected $bootstrappers = [
+        SwapExceptionHandler::class,
+        RegisterCoreInterfaces::class,
         RegisterBackendScheme::class,
         RegisterWarehouse::class,
+        RegisterAuth::class,
+        RegisterDynamicTypes::class,
+        RegisterDataTools::class,
+        RegisterMenu::class,
+        RegisterIntrospection::class,
+
+        Demo::class,
     ];
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(Router $router)
     {
+//        $existing = $router->getMiddlewareGroups();
+//        if(isset($existing['web'])) {
+//            dd($existing['web']);
+//        }
+//        $router->middlewareGroup('graphicms', [
+//
+//        ]);
 //        $this->app->register(CmsApplicationServiceProvider::class);
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'cms');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'cms');
@@ -38,9 +67,14 @@ class CmsServiceProvider extends ServiceProvider
     {
         $this->app->register(GraphQLServiceProvider::class);
 
+        config()->set('graphicms_graphql.controllers', Controller::class.'@query');
+
         if (!$this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'cms');
         }
+
+        $al = AliasLoader::getInstance();
+        $al->alias('Size', Size::class);
 
         $this->registerMongoDatabase();
 

@@ -1,0 +1,37 @@
+.vuetable {
+  thead, tfoot {
+    @apply bg-grey-lighter text-black;
+  }
+}
+
+.vuetable-body-wrapper {
+  @apply bg-white;
+}
+
+.pagination {
+  @apply bg-grey-lighter text-black flex flex-col justify-between mt-4;
+
+  @screen md {
+    & {
+      @apply flex-row;
+    }
+  }
+}
+
+.pagination-wrapper {
+  @apply flex list-reset border border-grey-light rounded w-auto font-sans;
+
+  .page {
+    @apply block text-blue border-r border-grey-light px-3 py-2;
+    &:hover {
+      @apply text-white bg-blue;
+    }
+  }
+
+  .link {
+    @apply block text-blue border-r border-grey-light px-3 py-2;
+    &:hover {
+      @apply text-white bg-blue;
+    }
+  }
+}

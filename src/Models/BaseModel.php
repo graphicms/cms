@@ -12,4 +12,14 @@ class BaseModel extends Model
     protected $connection = 'graphicmsdb';
 
     protected $guarded = [];
+
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
+    public function setCollection($name)
+    {
+        $this->collection = $name;
+    }
 }

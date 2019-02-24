@@ -15,6 +15,7 @@ class DispatchEvent
      */
     public function handle($request, $next)
     {
+//        \Cms::serving(true);
         ServingGraphi::dispatch($request);
 
         return $next($request);
