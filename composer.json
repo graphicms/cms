@@ -31,7 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Graphicms\\Cms\\": "src"
+            "Graphicms\\Cms\\": "src",
+            "October\\Rain\\Extension\\": "src/Core/Extension"
         }
     },
     "autoload-dev": {

@@ -22,7 +22,7 @@ class Controller extends BaseController {
 
         if( ! $schema)
         {
-            $schema = config('graphicms_graphql.default_schema');
+            $schema = config('graphicms.graphql.default_schema');
         }
 
         $result = \Cms::authorizeSchema($schema);
@@ -35,7 +35,7 @@ class Controller extends BaseController {
         $batch = $isBatch ? $request->all() : [$request->all()];
 
         $completedQueries = [];
-        $paramsKey = config('graphicms_graphql.params_key');
+        $paramsKey = config('graphicms.graphql.params_key');
 
         $opts = [
             'context'   => $this->queryContext(),
@@ -72,13 +72,13 @@ class Controller extends BaseController {
 
     public function graphiql(Request $request, $schema = null)
     {
-        $graphqlPath = '/'.config('graphicms_graphql.prefix');
+        $graphqlPath = '/'.config('graphicms.graphql.prefix');
         if ($schema)
         {
             $graphqlPath .= '/' . $schema;
         }
 
-        $view = config('graphicms_graphql.graphiql.view', 'graphicms_graphql::graphiql');
+        $view = config('graphicms.graphql.graphiql.view', 'graphicms_graphql::graphiql');
         return view($view, [
             'graphql_schema' => 'graphql_schema',
             'graphqlPath' => $graphqlPath

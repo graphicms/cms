@@ -11,8 +11,9 @@ use Graphicms\Cms\Events\ServingGraphi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
+use October\Rain\Extension\Extendable;
 
-class Cms
+class Cms extends Extendable
 {
     use AuthorizesRequests;
     use RegistersTypes, RegistersFields, RegistersColumns, RegistersMenuItems, HasMeta;

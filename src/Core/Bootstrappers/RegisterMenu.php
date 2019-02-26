@@ -36,26 +36,36 @@ class RegisterMenu
                         if(!$first) {
                             $first = '/entity/'.$type->name;
                         }
-                        $types[] = ['link' => '<router-link to="/entity/'.$type->name.'"><div class="icon-col">&nbsp;</div><div>'.Str::title($type->name).'</div></router-link>'];
+                        $types[] = $type;
                     } else {
 
                     }
                 }
             }
 
+            $types = collect($types);
+
+            event('graphi.extendTypesMenu', [&$types]);
+            $typesChildren = [];
+            foreach($types as $type) {
+                $typesChildren[] = ['link' => '<router-link to="/entity/'.$type->name.'"><div class="icon-col">&nbsp;</div><div>'.Str::title($type->name).'</div></router-link>'];
+            }
+
+
             $coreItems = [];
             $coreItems[] = ['link' => '<router-link to="/"><div class="icon-col"><i class="material-icons">dashboard</i></div><div>Dashboard</div></router-link>',
                             'children' => [
                                 ['link' => '<router-link to="/dashboard"><div class="icon-col"><strong>bb</strong></div><div>404</div></router-link>'],
                             ]];
-            if(count($types) > 0) {
+            if(count($typesChildren) > 0) {
                 $coreItems[] = [
                     'link' => '<a href="javscript:;"><div class="icon-col"><i class="material-icons">collections_bookmark</i> </div> <div>Entities</div> </a>',
-                    'children' => $types,
+                    'children' => $typesChildren,
                 ];
             }
 
             \Cms::registerMenuItems($coreItems);
+            event('graphi.coreMenuRegistered');
 
             $this->menuQuery();
         });
