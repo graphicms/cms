@@ -60,6 +60,7 @@ trait RegistersTypes
                 'enabled' => false,
                 'name' => Str::title($options['name']),
                 'title' => null,
+                'subtitle' => null,
             ],
         ];
 

@@ -813,7 +813,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n      query search($term: String!){\n        search(term: $term) {\n          collection {\n            name,\n            key\n          },\n          results {\n            identifier\n            title\n          }\n        }\n      }\n      "]);
+  var data = _taggedTemplateLiteral(["\n      query search($term: String!){\n        search(term: $term) {\n          collection {\n            name,\n            key\n          },\n          results {\n            identifier\n            title\n            subtitle\n          }\n        }\n      }\n      "]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -828,6 +828,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
 //
 //
 //
@@ -942,7 +944,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.searched = true;
                 searchQuery = graphql_tag__WEBPACK_IMPORTED_MODULE_4___default()(_templateObject());
                 this.loading = true;
-                _context.next = 7;
+                this.highlight = -1;
+                this.highlightKey = null;
+                _context.next = 9;
                 return _api__WEBPACK_IMPORTED_MODULE_5__["apiClient"].query({
                   query: searchQuery,
                   variables: {
@@ -950,14 +954,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 });
 
-              case 7:
+              case 9:
                 _ref = _context.sent;
                 search = _ref.data.search;
                 console.log(search);
                 this.results = search;
                 this.loading = false;
 
-              case 12:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -995,7 +999,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.highlight = next;
         this.highlightKey = this.$refs.searchResult[next].dataset.identify;
         this.$nextTick(function () {
-          _this2.$refs.searchResult[next].scrollIntoView(true);
+          _this2.$refs.searchResult[next].scrollIntoView({
+            block: 'center',
+            inline: 'center'
+          });
         });
       }
     },
@@ -1009,7 +1016,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.highlight = next;
         this.highlightKey = this.$refs.searchResult[next].dataset.identify;
         this.$nextTick(function () {
-          _this3.$refs.searchResult[next].scrollIntoView(true);
+          _this3.$refs.searchResult[next].scrollIntoView({
+            block: 'center',
+            inline: 'center'
+          });
         });
       }
     },
@@ -1020,7 +1030,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return item.dataset.identify === _this4.highlightKey;
       });
       selected.click();
+    },
+    notOnInputs: function notOnInputs(event) {
+      var tagName = event.target.tagName;
+      return Boolean(tagName !== 'INPUT' && tagName !== 'TEXTAREA');
+    },
+    globalShortcut: function globalShortcut(event) {
+      if (event.keyCode == 191 && this.notOnInputs(event)) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.activate();
+      }
     }
+  },
+  mounted: function mounted() {
+    document.addEventListener('keydown', this.globalShortcut);
+  },
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.globalShortcut);
   }
 });
 
@@ -2019,7 +2046,10 @@ var render = function() {
             ],
             ref: "search",
             staticClass: "w-full p-2 pl-8",
-            attrs: { type: "text" },
+            attrs: {
+              type: "text",
+              placeholder: 'Type "/" anywhere on page to focus'
+            },
             domProps: { value: _vm.term },
             on: {
               input: [
@@ -2149,7 +2179,7 @@ var render = function() {
                                 ref: "searchResult",
                                 refInFor: true,
                                 staticClass:
-                                  "cursor-pointer flex items-center hover:bg-grey-lightest block py-2 px-3 no-underline hover:no-underline font-normal text-black",
+                                  "cursor-pointer flex hover:bg-grey-lightest block py-2 px-3 no-underline hover:no-underline font-normal text-black flex flex-col text-left items-start",
                                 class: {
                                   "bg-grey-lightest":
                                     _vm.highlightKey ==
@@ -2172,11 +2202,16 @@ var render = function() {
                                 }
                               },
                               [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(resource.title) +
-                                    "\n                        "
-                                )
+                                _c("div", [_vm._v(_vm._s(resource.title))]),
+                                _vm._v(" "),
+                                resource.subtitle
+                                  ? _c("small", {
+                                      staticClass: "text-xs block",
+                                      domProps: {
+                                        textContent: _vm._s(resource.subtitle)
+                                      }
+                                    })
+                                  : _vm._e()
                               ]
                             )
                           ]

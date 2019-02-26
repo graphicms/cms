@@ -12,6 +12,7 @@
                        @keydown.up.stop="moveUp"
                        @keydown.enter.stop="gotoSelected"
                        @keydown.esc.stop="close"
+                       placeholder='Type "/" anywhere on page to focus'
                 >
             </div>
             <div
@@ -33,12 +34,13 @@
                         <li v-for="resource in result.results" :key="result.collection.key + '-' + resource.identifier">
                             <a href='#'
                                @click.prevent="goTo(result.collection, resource)"
-                               class="cursor-pointer flex items-center hover:bg-grey-lightest block py-2 px-3 no-underline hover:no-underline font-normal text-black"
+                               class="cursor-pointer flex hover:bg-grey-lightest block py-2 px-3 no-underline hover:no-underline font-normal text-black flex flex-col text-left items-start"
                                :class="{'bg-grey-lightest': highlightKey == `${result.collection.key}-${resource.identifier}`}"
                                ref="searchResult"
                                :data-identify="`${result.collection.key}-${resource.identifier}`"
                             >
-                                {{ resource.title }}
+                                <div>{{ resource.title }}</div>
+                                <small v-if="resource.subtitle" v-text="resource.subtitle" class="text-xs block"></small>
                             </a>
                         </li>
                     </ul>
@@ -102,11 +104,14 @@
             results {
               identifier
               title
+              subtitle
             }
           }
         }
         `;
         this.loading = true;
+        this.highlight = -1;
+        this.highlightKey = null;
         let {data: {search}} = await apiClient.query({
           query: searchQuery,
           variables: {
@@ -139,7 +144,7 @@
           this.highlight = next;
           this.highlightKey = this.$refs.searchResult[next].dataset.identify
           this.$nextTick(() => {
-            this.$refs.searchResult[next].scrollIntoView(true)
+            this.$refs.searchResult[next].scrollIntoView({block: 'center', inline: 'center'})
           })
         }
       },
@@ -151,7 +156,7 @@
           this.highlight = next;
           this.highlightKey = this.$refs.searchResult[next].dataset.identify
           this.$nextTick(() => {
-            this.$refs.searchResult[next].scrollIntoView(true)
+            this.$refs.searchResult[next].scrollIntoView({block: 'center', inline: 'center'})
           })
         }
       },
@@ -161,8 +166,27 @@
           return item.dataset.identify === this.highlightKey;
         })
         selected.click()
-      }
-    }
+      },
+      notOnInputs(event) {
+        const tagName = event.target.tagName
+        return Boolean(tagName !== 'INPUT' && tagName !== 'TEXTAREA')
+      },
+
+      globalShortcut(event) {
+        if (event.keyCode == 191 && this.notOnInputs(event)) {
+          event.preventDefault()
+          event.stopPropagation()
+          this.activate()
+        }
+      },
+    },
+    mounted() {
+      document.addEventListener('keydown', this.globalShortcut)
+    },
+
+    destroyed() {
+      document.removeEventListener('keydown', this.globalShortcut)
+    },
   }
 </script>
 

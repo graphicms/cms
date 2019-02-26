@@ -46,6 +46,9 @@ class RegisterAdminSearch
             'title' => [
                 'type' => Type::string(),
             ],
+            'subtitle' => [
+                'type' => Type::string(),
+            ],
         ]));
         \CmsQL::addType(DynamicType::make([
             'name' => 'SearchResult',
@@ -185,6 +188,7 @@ class RegisterAdminSearch
                 $title = $type->search['title'];
             }
             $res['title'] = $result->{$title};
+            $res['subtitle'] = $type->search['subtitle'] !== null ? $result->{$type->search['subtitle']} : null;
             $resultSet['results'][] = $res;
         }
         return $resultSet;

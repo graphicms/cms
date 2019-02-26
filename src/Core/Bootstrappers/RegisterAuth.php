@@ -64,7 +64,8 @@ class RegisterAuth
                 'search' => [
                     'enabled' => true,
                     'attributes' => ['name'],
-                    'title' => 'name'
+                    'title' => 'name',
+                    'subtitle' => 'email',
                 ]
             ]);
         });

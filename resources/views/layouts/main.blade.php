@@ -13,7 +13,7 @@
 <body class="bg-white-smoke">
 <div id="graphicms" class="h-full">
     <vue-topprogress ref="topProgress"></vue-topprogress>
-    <div class="head w-full flex p-8">
+    <div class="head w-full flex p-8 items-center">
         <div class="w-200">
             <h1 class="text-arsenic text-xl pr-4">
                 <router-link to="/" class="text-black hover:no-underline">
