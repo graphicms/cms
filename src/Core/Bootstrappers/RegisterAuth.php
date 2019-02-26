@@ -59,7 +59,12 @@ class RegisterAuth
             'typeNames'   => [
                 'type' => 'User'
             ],
-            'primary_key' => 'id'
+            'primary_key' => 'id',
+            'search' => [
+                'enabled' => true,
+                'attributes' => ['name'],
+                'title' => 'name'
+            ]
         ]);
 
         $app['events']->listen(ServingGraphQL::class, function () {

@@ -39,6 +39,7 @@ trait RegistersTypes
             'columns'        => T::array(),
             'menu'           => T::union(T::boolean(), T::array(), T::string()),
             'primary_key'    => T::string(),
+            'search'     => T::array(),
         ]);
         $defaults = [
             'collection'   => true,
@@ -54,8 +55,14 @@ trait RegistersTypes
             'typeNames'    => [],
             'columns'      => [],
             'menu'         => true,
-            'primary_key'  => '_id'
+            'primary_key'  => '_id',
+            'search'   => [
+                'enabled' => false,
+                'name' => Str::title($options['name']),
+                'title' => null,
+            ],
         ];
+
         foreach ($defaults as $key => $val) {
             try {
                 $model[$key] = $val;
@@ -82,6 +89,8 @@ trait RegistersTypes
         foreach ($options as $key => $val) {
             if ($key == 'typeNames') {
                 $defer = array_merge($model['typeNames'], $val);
+            } else if($key == 'search') {
+                $model['search'] = array_merge($model['search'], $val);
             } else {
                 $model[$key] = $val;
             }

@@ -562,6 +562,7 @@ module.exports = {
   minWidth: {
     '0': '0',
     '200': '200px',
+    '400': '400px',
     'full': '100%',
   },
 
@@ -634,6 +635,7 @@ module.exports = {
   maxHeight: {
     'full': '100%',
     'screen': '100vh',
+    'search-dropdown': '19rem'
   },
 
 

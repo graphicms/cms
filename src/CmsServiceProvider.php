@@ -2,7 +2,9 @@
 
 namespace Graphicms\Cms;
 
+use Graphicms\Cms\Console\Commands\SyncFulltext;
 use Graphicms\Cms\Core\Bootstrappers\Demo;
+use Graphicms\Cms\Core\Bootstrappers\RegisterAdminSearch;
 use Graphicms\Cms\Core\Bootstrappers\RegisterIntrospection;
 use Graphicms\Cms\Core\Bootstrappers\RegisterMenu;
 use Graphicms\Cms\Core\Bootstrappers\SwapExceptionHandler;
@@ -21,6 +23,8 @@ use Graphicms\GraphQL\GraphQLServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Symfony\Component\Finder\Finder;
 
 class CmsServiceProvider extends ServiceProvider
 {
@@ -34,9 +38,11 @@ class CmsServiceProvider extends ServiceProvider
         RegisterDataTools::class,
         RegisterMenu::class,
         RegisterIntrospection::class,
+        RegisterAdminSearch::class,
 
         Demo::class,
     ];
+
     /**
      * Bootstrap the application services.
      */
@@ -67,7 +73,7 @@ class CmsServiceProvider extends ServiceProvider
     {
         $this->app->register(GraphQLServiceProvider::class);
 
-        config()->set('graphicms_graphql.controllers', Controller::class.'@query');
+        config()->set('graphicms.graphql.controllers', Controller::class . '@query');
 
         if (!$this->app->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'cms');
@@ -97,11 +103,11 @@ class CmsServiceProvider extends ServiceProvider
 //        ], 'views');
 
         $this->publishes([
-            __DIR__.'/Console/stubs/GraphiServiceProvider.stub' => app_path('Providers/GraphiServiceProvider.php'),
+            __DIR__ . '/Console/stubs/GraphiServiceProvider.stub' => app_path('Providers/GraphiServiceProvider.php'),
         ], 'graphicms-provider');
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('cms-assets'),
+            __DIR__ . '/../public' => public_path('cms-assets'),
         ], 'graphicms-assets');
 
         // Publishing assets.
@@ -123,6 +129,7 @@ class CmsServiceProvider extends ServiceProvider
         $this->commands([
             InstallCommand::class,
             UpgradeCommand::class,
+            SyncFulltext::class,
         ]);
     }
 
@@ -144,6 +151,33 @@ class CmsServiceProvider extends ServiceProvider
     }
 
     protected function bootCoreBootstrapers(): void
+    {
+        $this->loadPredefinedBootstrappers();
+        $this->autoLoadFromAppFolder();
+    }
+
+    protected function autoLoadFromAppFolder(): void
+    {
+        $finder = new Finder();
+
+        if (is_dir($dir = app_path('Graphi'))) {
+            $namespace = app()->getNamespace();
+
+            $files = $finder->in($dir)->files()->name('*Loader.php');
+            foreach ($files as $file) {
+                $collection = $namespace . str_replace(
+                        ['/', '.php'],
+                        ['\\', ''],
+                        Str::after($file->getPathname(), app_path() . DIRECTORY_SEPARATOR)
+                    );
+                if (class_exists($collection)) {
+                    app()->make($collection);
+                }
+            }
+        }
+    }
+
+    protected function loadPredefinedBootstrappers(): void
     {
         foreach ($this->bootstrappers as $bootstraper) {
             app()->make($bootstraper);

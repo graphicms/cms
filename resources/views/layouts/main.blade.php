@@ -354,7 +354,9 @@
             </h1>
         </div>
         <div class="w-full flex justify-between">
-            <div>&nbsp;</div>
+            <div>
+                <Search></Search>
+            </div>
             <div>
                 <graphi-header-user></graphi-header-user>
             </div>

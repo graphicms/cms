@@ -125,7 +125,13 @@ class Demo
         }, [
             'name'        => 'prostie',
             'model'       => DynamicTypeModel::getInstance('prostie', [
-                'softDelete' => true
+                'softDelete' => true,
+                'scout' => true,
+//                'toSearchableArray' => function() {
+//                    $base = $this->toArray();
+//                    $base['adaugatDeMine'] = 'da';
+//                    return $base;
+//                }
             ]),
             'schema'      => 'default',
             'filters'     => function () {
@@ -144,7 +150,12 @@ class Demo
                 Column::make(['sortable' => true, 'label' => 'Coloana doi', 'field' => 'doi']),
                 ActionsColumn::make()
             ],
-            'menu'        => true
+            'menu'        => true,
+            'search' => [
+                'enabled' => true,
+                'attributes' => ['unu', 'doi'],
+                'title' => 'unu',
+            ]
         ]);
     }
 

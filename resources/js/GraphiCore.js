@@ -1,4 +1,5 @@
 import Card from './core/components/Card'
+import Search from './core/components/Search'
 import Fields from './core/components/form/Fields'
 import Errors from './core/components/form/Errors'
 import Form from './core/components/form/Form'
@@ -147,6 +148,7 @@ class GraphiCore {
       install(Vue)
       Vue.component('graphi-header-user', HeaderUser)
       Vue.component('side-menu', SideMenu)
+      Vue.component('Search', Search)
       Vue.component('Card', Card)
       Vue.component('Form', Form)
       Vue.component('Fields', Fields)

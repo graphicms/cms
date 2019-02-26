@@ -185,6 +185,7 @@
         this.entityFields = fields;
         this.entityCols = cols;
         this.entityInfo = typeInfo;
+        console.log(typeInfo)
 
         this.tableFields = []
 
