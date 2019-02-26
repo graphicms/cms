@@ -101,62 +101,64 @@ class Demo
 
     private function addEntities(): void
     {
-# step 1 - register graphql type
-        \CmsQL::addType(DynamicType::make([
-            'name' => 'ProstieType',
-        ], [
-            '_id' => [
-                'type' => Type::string()
-            ],
-            'unu' => [
-                'type' => Type::string()
-            ],
-            'doi' => [
-                'type' => Type::string()
-            ]
-        ], [], [
-            \CmsQL::type('HasDates'),
-            \CmsQL::type('IsSoftDeleting'),
-        ]));
+        app()->booted(function() {
+            # step 1 - register graphql type
+            \CmsQL::addType(DynamicType::make([
+                'name' => 'ProstieType',
+            ], [
+                '_id' => [
+                    'type' => Type::string()
+                ],
+                'unu' => [
+                    'type' => Type::string()
+                ],
+                'doi' => [
+                    'type' => Type::string()
+                ]
+            ], [], [
+                \CmsQL::type('HasDates'),
+                \CmsQL::type('IsSoftDeleting'),
+            ]));
 
-        # step 2 - register custom type into CMS
-        \Cms::registerType(function () {
-            return \CmsQL::type('ProstieType'); // the type registered above
-        }, [
-            'name'        => 'prostie',
-            'model'       => DynamicTypeModel::getInstance('prostie', [
-                'softDelete' => true,
-                'scout' => true,
-//                'toSearchableArray' => function() {
-//                    $base = $this->toArray();
-//                    $base['adaugatDeMine'] = 'da';
-//                    return $base;
-//                }
-            ]),
-            'schema'      => 'default',
-            'filters'     => function () {
-                return [
-                    'unu'        => Filterable::String,
-                    'created_at' => Filterable::Date,
-                ];
-            },
-            'form_fields' => [
-                TextField::make(['label' => 'Unu', 'db' => 'unu', 'name' => 'unu', 'size' => \Size::HALF, 'required' => true]),
-                TextField::make(['label' => 'Doi', 'db' => 'doi', 'name' => 'doi', 'size' => \Size::HALF, 'required' => true]),
-//                InvisibleField::make(['label' => 'Doi', 'db' => 'doi', 'name' => 'doi', 'size' => \Size::HALF, 'required' => true]),
-            ],
-            'columns'     => [
-                Column::make(['sortable' => true, 'label' => 'Coloana unu', 'field' => 'unu']),
-                Column::make(['sortable' => true, 'label' => 'Coloana doi', 'field' => 'doi']),
-                ActionsColumn::make()
-            ],
-            'menu'        => true,
-            'search' => [
-                'enabled' => true,
-                'attributes' => ['unu', 'doi'],
-                'title' => 'unu',
-            ]
-        ]);
+            # step 2 - register custom type into CMS
+            \Cms::registerType(function () {
+                return \CmsQL::type('ProstieType'); // the type registered above
+            }, [
+                'name'        => 'prostie',
+                'model'       => DynamicTypeModel::getInstance('prostie', [
+                    'softDelete' => true,
+                    'scout' => true,
+                    //                'toSearchableArray' => function() {
+                    //                    $base = $this->toArray();
+                    //                    $base['adaugatDeMine'] = 'da';
+                    //                    return $base;
+                    //                }
+                ]),
+                'schema'      => 'default',
+                'filters'     => function () {
+                    return [
+                        'unu'        => Filterable::String,
+                        'created_at' => Filterable::Date,
+                    ];
+                },
+                'form_fields' => [
+                    TextField::make(['label' => 'Unu', 'db' => 'unu', 'name' => 'unu', 'size' => \Size::HALF, 'required' => true]),
+                    TextField::make(['label' => 'Doi', 'db' => 'doi', 'name' => 'doi', 'size' => \Size::HALF, 'required' => true]),
+                    //                InvisibleField::make(['label' => 'Doi', 'db' => 'doi', 'name' => 'doi', 'size' => \Size::HALF, 'required' => true]),
+                ],
+                'columns'     => [
+                    Column::make(['sortable' => true, 'label' => 'Coloana unu', 'field' => 'unu']),
+                    Column::make(['sortable' => true, 'label' => 'Coloana doi', 'field' => 'doi']),
+                    ActionsColumn::make()
+                ],
+                'menu'        => true,
+                'search' => [
+                    'enabled' => true,
+                    'attributes' => ['unu', 'doi'],
+                    'title' => 'unu',
+                ]
+            ]);
+        });
     }
 
 }

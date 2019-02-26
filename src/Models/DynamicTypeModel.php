@@ -16,7 +16,7 @@ class DynamicTypeModel extends BaseModel
 
     protected $dates = ['deleted_at'];
 
-    protected static $_searchable_extend = false;
+    protected static $_searchable_extend = [];
 
     public static function getInstance($collection, array $options = [])
     {
@@ -43,7 +43,7 @@ class DynamicTypeModel extends BaseModel
             $toSearchable = array_get($options, 'toSearchableArray', false);
             if($toSearchable instanceof \Closure) {
 //                $toSearchable = \Closure::bind($toSearchable, $inst);
-                static::$_searchable_extend = $toSearchable;
+                static::$_searchable_extend[$collection] = $toSearchable;
             }
         }
         return $inst;
@@ -51,7 +51,7 @@ class DynamicTypeModel extends BaseModel
 
     public function toSearchableArray()
     {
-        if(static::$_searchable_extend instanceof \Closure) {
+        if(isset(static::$_searchable_extend[$this->collection]) && static::$_searchable_extend[$this->collection] instanceof \Closure) {
             $toSearchable = \Closure::bind(static::$_searchable_extend, $this, static::class);
             return $toSearchable();
         } else if($this->isClassExtendedWith(ScoutSearchable::class)) {

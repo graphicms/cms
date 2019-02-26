@@ -125,7 +125,7 @@ class RegisterAdminSearch
                 if(($model instanceof BaseModel && $model->isClassExtendedWith(ScoutSearchable::class))) {
                     $builder = $model->search($arguments['term']);
                 } else {
-                    $basename = class_basename($model);
+                    $basename = get_class($model);
                     $builder = forward_static_call([$basename, 'search'], $arguments['term']);
                 }
 

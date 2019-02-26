@@ -38,34 +38,36 @@ class RegisterAuth
         \Cms::registerFields('user', $coreUserFields);
         \Cms::registerFields('profile', $coreUserFields);
 
-        \Cms::registerType(function () {
-            return \CmsQL::type('User'); // the type registered above
-        }, [
-            'name'        => 'user',
-            'model'       => new User,
-            'schema'      => 'backend',
-            'form_fields' => [
+        app()->booted(function() {
+            \Cms::registerType(function () {
+                return \CmsQL::type('User'); // the type registered above
+            }, [
+                'name'        => 'user',
+                'model'       => new User,
+                'schema'      => 'backend',
+                'form_fields' => [
 //                TextField::make(['label' => 'Unu', 'db' => 'unu', 'name' => 'unu', 'size' => \Size::HALF, 'required' => true]),
 //                TextField::make(['label' => 'Doi', 'db' => 'doi', 'name' => 'doi', 'size' => \Size::HALF, 'required' => true]),
 //                InvisibleField::make(['label' => 'Doi', 'db' => 'doi', 'name' => 'doi', 'size' => \Size::HALF, 'required' => true]),
-            ],
-            'columns'     => [
-                Column::make(['sortable' => true, 'label' => 'Coloana unu', 'field' => 'name']),
-                Column::make(['sortable' => true, 'label' => 'Coloana unu', 'field' => 'name']),
-                Column::make(['sortable' => true, 'label' => 'Coloana doi', 'field' => 'profile.sub.bio_sub']),
-                ActionsColumn::make()
-            ],
-            'menu'        => true,
-            'typeNames'   => [
-                'type' => 'User'
-            ],
-            'primary_key' => 'id',
-            'search' => [
-                'enabled' => true,
-                'attributes' => ['name'],
-                'title' => 'name'
-            ]
-        ]);
+                ],
+                'columns'     => [
+                    Column::make(['sortable' => true, 'label' => 'Coloana unu', 'field' => 'name']),
+                    Column::make(['sortable' => true, 'label' => 'Coloana unu', 'field' => 'name']),
+                    Column::make(['sortable' => true, 'label' => 'Coloana doi', 'field' => 'profile.sub.bio_sub']),
+                    ActionsColumn::make()
+                ],
+                'menu'        => true,
+                'typeNames'   => [
+                    'type' => 'User'
+                ],
+                'primary_key' => 'id',
+                'search' => [
+                    'enabled' => true,
+                    'attributes' => ['name'],
+                    'title' => 'name'
+                ]
+            ]);
+        });
 
         $app['events']->listen(ServingGraphQL::class, function () {
             $this->registerTypes();

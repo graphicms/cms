@@ -40,19 +40,18 @@ class ScoutSearchable extends ExtensionBase
         $this->model = $model;
 
         forward_static_call([$this->model, 'addGlobalScope'], new SearchableScope);
-//        forward_static_call([$this->model, 'observe'], new ModelObserver);
 
         forward_static_call([$this->model, 'saved'], function ($m) {
-            return $this->saved($m);
+            $this->saved($m);
         });
         forward_static_call([$this->model, 'deleted'], function ($m) {
-            return $this->deleted($m);
+            $this->deleted($m);
         });
-        app('events')->listen('eloquent.forceDeleted: '.class_basename($this->model), function($m) {
-            return $this->forceDeleted($m);
+        app('events')->listen('eloquent.forceDeleted: '.get_class($this->model), function($m) {
+            $this->forceDeleted($m);
         });
-        app('events')->listen('eloquent.restored: '.class_basename($this->model), function($m) {
-            return $this->restored($m);
+        app('events')->listen('eloquent.restored: '.get_class($this->model), function($m) {
+            $this->restored($m);
         });
 
         $this->registerSearchableMacros();
