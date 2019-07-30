@@ -6,7 +6,7 @@
         "cms"
     ],
     "homepage": "https://github.com/graphicms/cms",
-    "license": "MIT License",
+    "license": "MIT",
     "type": "library",
     "authors": [
         {
