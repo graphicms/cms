@@ -136,7 +136,10 @@
 
         this.data = apidata.data
 
-        if (this.data.length < 1) return;
+        if (this.data.length < 1) {
+          global.app.bus.$emit('hideLoading');
+          return;
+        }
 
         let local = this.data;
 

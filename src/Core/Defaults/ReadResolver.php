@@ -50,6 +50,8 @@ class ReadResolver
         }
         $basePagination = $newQuery->paginate($perPage, ['*'], 'page', $page);
         $pag = $basePagination->toArray();
+        $pag['from'] = $pag['from'] ?? 0;
+        $pag['to'] = $pag['to'] ?? 0;
         $pag['data'] = $basePagination->items();
         $pag['paginated'] = true;
         return $pag;

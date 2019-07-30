@@ -448,13 +448,14 @@ var blank = {
                 this.data = apidata.data;
 
                 if (!(this.data.length < 1)) {
-                  _context.next = 19;
+                  _context.next = 20;
                   break;
                 }
 
+                global.app.bus.$emit('hideLoading');
                 return _context.abrupt("return");
 
-              case 19:
+              case 20:
                 local = this.data; // sortOrder can be empty, so we have to check for that as well
                 // if (sortOrder.length > 0) {
                 //   console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
@@ -474,7 +475,7 @@ var blank = {
                   data: local
                 });
 
-              case 25:
+              case 26:
               case "end":
                 return _context.stop();
             }
