@@ -23,7 +23,8 @@
         "illuminate/support": "5.7.*|5.8.*",
         "jenssegers/mongodb": "dev-master",
         "nikolaposa/version": "^3.1",
-        "spatie/typed": "^0.1.1"
+        "spatie/typed": "^0.1.1",
+        "laravel/scout": "^7.1"
     },
     "require-dev": {
         "orchestra/testbench": "3.7.*",
