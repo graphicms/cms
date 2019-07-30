@@ -135,17 +135,26 @@ class CmsServiceProvider extends ServiceProvider
 
     protected function registerMongoDatabase(): void
     {
-        $dbConfig = [
-            'driver'   => 'mongodb',
-            'host'     => config('cms.mongodb_database.host', '127.0.0.1'),
-            'port'     => config('cms.mongodb_database.port', 27017),
-            'database' => config('cms.mongodb_database.database'),
-            'username' => config('cms.mongodb_database.username', ''),
-            'password' => config('cms.mongodb_database.password', ''),
-            'options'  => [
-                'database' => 'admin' // sets the authentication database required by mongo 3
-            ]
-        ];
+        $dsn = config('cms.mongodb_database.dsn');
+        if($dsn) {
+            $dbConfig = [
+                'driver'   => 'mongodb',
+                'dsn' => $dsn,
+                'database' => config('cms.mongodb_database.database'),
+            ];
+        } else {
+            $dbConfig = [
+                'driver'   => 'mongodb',
+                'host'     => config('cms.mongodb_database.host', '127.0.0.1'),
+                'port'     => config('cms.mongodb_database.port', 27017),
+                'database' => config('cms.mongodb_database.database'),
+                'username' => config('cms.mongodb_database.username', ''),
+                'password' => config('cms.mongodb_database.password', ''),
+                'options'  => [
+                    'database' => 'admin' // sets the authentication database required by mongo 3
+                ]
+            ];
+        }
 
         config()->set('database.connections.graphicmsdb', $dbConfig);
     }

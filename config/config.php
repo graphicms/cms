@@ -12,6 +12,7 @@ return [
         'database' => env('CMS_DB_DATABASE', 'graphicms'),
         'username' => env('CMS_DB_USERNAME', 'homestead'),
         'password' => env('CMS_DB_PASSWORD', ''),
+        'dsn' => env('CMS_DB_DSN', null)
 
     ],
 
