@@ -43,7 +43,7 @@
     "vue-server-renderer": "^2.5.16",
     "vue-template-compiler": "^2.6.6",
     "webpack-bundle-analyzer": "^3.3.2",
-    "yarn": "^1.17.3"
+    "yarn": "^1.22.0"
   },
   "dependencies": {
     "@enrian/vue-pikaday": "^1.0.3",
