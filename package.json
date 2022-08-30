@@ -64,7 +64,7 @@
     "lodash-es": "^4.17.14",
     "luxon": "^1.11.3",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21",
+    "moment-timezone": "^0.5.35",
     "numeral": "^2.0.6",
     "pikaday": "^1.7.0",
     "places.js": "^1.7.3",
