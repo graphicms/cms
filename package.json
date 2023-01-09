@@ -62,7 +62,7 @@
     "graphql-tag": "^2.10.1",
     "jquery": "^3.4.1",
     "lodash-es": "^4.17.14",
-    "luxon": "^1.11.3",
+    "luxon": "^2.5.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "numeral": "^2.0.6",
